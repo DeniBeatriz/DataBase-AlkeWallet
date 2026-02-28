@@ -1,1 +1,59 @@
-select * from usuario;
+-- =====================================
+--	CREAR BASE DE DATOS
+-- =====================================
+
+CREATE DATABASE AlkeWallet;
+USE AlkeWallet;
+
+-- =====================================
+--	MOSTRAR BASE DE DATOS CREADA
+-- =====================================
+
+SHOW DATABASES; --para mostrar la creación de la base de datos 
+
+-- =====================================
+-- 	TABLA MONEDA
+-- =====================================
+
+CREATE TABLE Moneda (
+	currency_id			  INT				     AUTO_INCREMENT PRIMARY KEY, -- se crea y aumenta de forma automática el ID 
+	currency_name		  VARCHAR (100)	 NOT NULL,
+	currency_symbol		VARCHAR (50)	 NOT NULL
+
+);
+
+-- =====================================
+--	TABLA USUARIO
+-- =====================================
+
+CREATE TABLE Usuario (
+	user_id		  	INT 		    AUTO_INCREMENT PRIMARY KEY, -- se crea y aumenta de forma automática el ID
+	username	  	VARCHAR     (100) 	NOT NULL UNIQUE, -- el usuario no se repite
+	email			    VARCHAR     (150) 	NOT NULL UNIQUE, -- el email no se repite
+	password	  	VARCHAR     (150)	NOT NULL, 
+	balance		  	DECIMAL     (10,2)	NOT NULL DEFAULT 0.0000,		
+  currency_id		INT,
+  FOREIGN KEY(currency_id)  REFERENCES Moneda(currency_id)
+
+);
+		
+
+-- =====================================
+--	TABLA TRANSACCIÓN
+-- =====================================
+
+CREATE TABLE Transaccion (
+	transaction_id		      INT		          AUTO_INCREMENT PRIMARY KEY,
+	sender_user_id		      INT		          NOT NULL,
+	receiver_user_id	      INT		          NOT NULL,
+	amount				          DECIMAL(10,2)		NOT NULL CHECK(amount > 0),
+	transaction_date	      DATETIME	      DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(sender_user_id) REFERENCES Usuario(user_id),
+	FOREIGN KEY(receiver_user_id) REFERENCES Usuario(user_id)
+
+);		
+
+
+
+
+	
